@@ -1,0 +1,18 @@
+<div class="col-xs-12">
+  <% owner = params[:owned_by].downcase == 'me' %>
+  <h4>Shared <%= owner ? 'by me' : 'with me' %></h4>
+  <hr>
+  <ul class="list-container">
+    <% if @data.present? %>
+      <% @data.each do |data| %>
+        <li class="list-item">
+          <% if owner %>
+            You have shared your location with <%= data.shared_with_user %>
+          <% else %>
+            <%= data.user.display_name %> shared their location with you
+          <% end %>
+        </li>
+      <% end %>
+    <% end %>
+  </ul>
+</div>

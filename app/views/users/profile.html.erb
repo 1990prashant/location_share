@@ -1,0 +1,86 @@
+<h4>Publicly shared locations</h4>
+<hr>
+<div id="map" class="map"></div>
+<% if @admin %>
+  <br>
+  <button type="button" class="btn btn-primary pull-right" data-toggle="modal" data-target="#exampleModalLong">
+    Select User(s)
+  </button>
+
+  <!-- Modal -->
+  <%= render partial: 'user_list' %>
+<% end %>
+<script type="text/javascript">
+  var locationName = ""
+  let locations = <%= @admin ? [[@public_shared_locations.lon, @public_shared_locations.lat]] : @public_shared_locations.pluck(:lon, :lat) %>
+  let style = new ol.style.Style({
+    image: new ol.style.Icon({
+      opacity: 1,
+      scale: 1,
+      src: '/images/marker.png'
+    })
+  });
+  let iconFeatures = [];
+
+  for (var i = 0; i < locations.length; i++) {
+    iconFeatures.push(new ol.Feature({
+      geometry: new ol.geom.Point(ol.proj.fromLonLat(locations[i]))
+    }));
+  }
+  iconFeatures.forEach(function(feature) { feature.setStyle(style); });
+  const vectorLayer = new ol.layer.Vector({
+      source: new ol.source.Vector({
+          features: iconFeatures
+      })
+  });
+  let map = new ol.Map({
+      view: new ol.View({
+          center: ol.proj.fromLonLat(locations[0]),
+          zoom: 4
+      }),
+      layers: [
+          new ol.layer.Tile({
+              source: new ol.source.OSM()
+          }),
+          vectorLayer
+      ],
+      target: 'map'
+  });
+
+  $(document).ready(function(){
+    $('#public').click(function(){
+      if($(this).prop('checked')){
+        $('.common').attr('disabled', 'disabled');
+      } else{
+        $('.common').attr('disabled', false);
+      }
+    });
+
+    $('#share-btn').click(function(){
+      <% if @admin %>
+        sharedWithIds = [];
+        $('.common').each(function(){
+          if($(this).prop('checked')){
+            sharedWithIds.push($(this).val());
+          }
+        });
+        // fetch('http://nominatim.openstreetmap.org/reverse?format=json&lon=' + <%= @public_shared_locations.lon %> + '&lat=' + <%= @public_shared_locations.lat %>)
+        //  .then(function(response) {
+        //     return response.json();
+        //   }).then(function(json) {
+        //       console.log(json);
+        //   });
+        $.ajax({
+          url: '/locations/'+<%= @public_shared_locations.try(:id) %>+'/share.json',
+          type: 'POST',
+          data: { shared_with_ids: sharedWithIds },
+          success: function(data) {
+            alert('Successfully shared');
+            $('#exampleModalLong').modal('toggle');
+          }
+        });
+      <% end %>
+    });
+  });
+
+</script>

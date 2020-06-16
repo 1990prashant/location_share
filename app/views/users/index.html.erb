@@ -1,0 +1,16 @@
+<h4>List of Users</h4>
+<hr>
+<div class="col-xs-12">
+  <ul class="list-container">
+    <% if @users.present? %>
+      <% @users.each do |user| %>
+        <li class="list-item">
+          <%= link_to user_profile_url(user.username), class: 'txt-black' do %>
+            <%= user.display_name %>
+          <% end %>
+        </li>
+      <% end %>
+    <% else %>
+    <% end %>
+  </ul>
+</div>

@@ -1,0 +1,13 @@
+<% if user_signed_in? %>
+  <ul class="list-container">
+    <li class="list-item">
+      <%= link_to 'Shared by me', user_shared_location_url(current_user.id, 'me'), class: 'txt-black' %>
+    </li>
+    <li class="list-item">
+      <%= link_to 'Shared with me', user_shared_location_url(current_user.id, 'other'), class: 'txt-black' %>
+    </li>
+    <li class="list-item">
+      <%= link_to 'Users', users_url, class: 'txt-black' %>
+    </li>
+  </ul>
+<% end %>

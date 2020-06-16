@@ -1,0 +1,20 @@
+<header class="header">
+  <div class="container">
+    <div class="row">
+      <div class="col-xs-6">
+        <div class="logo-band">
+          <b>
+            <%= link_to "LocationShare", root_url, class: 'txt-white' %>
+          </b>
+        </div>
+      </div>
+      <div class="col-xs-6">
+        <% if user_signed_in? %>
+          <%= link_to "Log out", destroy_user_session_url, method: :delete, class: 'txt-white pull-right' %>
+        <% else %>
+          <%= link_to "Log in", new_user_session_url, class: 'txt-white pull-right' %>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</header>
