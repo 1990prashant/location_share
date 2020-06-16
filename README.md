@@ -1,24 +1,26 @@
-# README
+# Readme
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+This application is made under an assignment. In this application user is able to share their locations. I have used OpenLayers for the map. Currently it is having seed users and location details. And when user share their location it just showing shared location. Currently system is not developed to show the name of the location.
 
-Things you may want to cover:
+You need the following system specification before setup.
+ * ruby - 2.7.0
+ * rails - 6.0.3.1
+ * mysql database
 
-* Ruby version
+# Setup:
 
-* System dependencies
+* clone the application
 
-* Configuration
+* Go into the project directory
 
-* Database creation
+* Run bundle install
 
-* Database initialization
+* Change database.yml file with your own mysql config
 
-* How to run the test suite
+* Run rake db:create
 
-* Services (job queues, cache servers, search engines, etc.)
+* Run rake db:migrate
 
-* Deployment instructions
+* Run rake db:seed
 
-* ...
+* Run rails s
